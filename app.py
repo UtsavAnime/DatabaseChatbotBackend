@@ -2,11 +2,13 @@ from flask import Flask,request, jsonify
 from flask_cors import CORS
 from langchain import OpenAI, SQLDatabase, SQLDatabaseChain
 from langchain.prompts.prompt import PromptTemplate
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 app = Flask(__name__)
 
 CORS(app)
-
+api_key = os.environ.get('API_KEY')
 @app.route('/',methods=['GET'])
 def get_message():
     return jsonify("hello")
@@ -40,7 +42,7 @@ def get_data():
         # if __name__ == "__main__":
         #     main()
     llm = OpenAI(
-            openai_api_key='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', temperature=0) #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, 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
+            openai_api_key=api_key, temperature=0) #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, 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
 
     db_chain = SQLDatabaseChain(llm=llm, database=db, verbose=True, prompt=PROMPT)
     data = request.json
